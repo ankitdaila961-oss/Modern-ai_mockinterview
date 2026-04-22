@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign In – InterviewAI</title>
+  <meta name="description" content="Sign in to your InterviewAI account and continue your mock interview practice." />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <div class="bg-blobs">
+    <span></span><span></span><span></span>
+  </div>
+
+  <div class="auth-page">
+    <div class="auth-container">
+
+      <div class="auth-header">
+        <div class="logo-icon-lg">🤖</div>
+        <h1>Welcome back</h1>
+        <p>Sign in to continue your interview prep.</p>
+      </div>
+
+      <div class="auth-card">
+        <div class="alert alert-error" id="alertError">
+          ⚠️ <span id="alertErrorMsg">Invalid credentials.</span>
+        </div>
+        <div class="alert alert-success" id="alertSuccess">
+          ✅ <span id="alertSuccessMsg">Login successful! Redirecting…</span>
+        </div>
+
+        <form id="loginForm" novalidate>
+          <div class="form-group">
+            <label class="form-label" for="email">Email Address</label>
+            <input class="form-input" type="email" id="email" name="email"
+              placeholder="john@example.com" autocomplete="email" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="password">Password</label>
+            <input class="form-input" type="password" id="password" name="password"
+              placeholder="Your password" autocomplete="current-password" required />
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block btn-lg" id="submitBtn">
+            Sign In
+          </button>
+        </form>
+
+        <div class="divider">or</div>
+
+        <a href="register.html" class="btn btn-outline btn-block" style="margin-top:0;">
+          Create a new account
+        </a>
+      </div>
+
+      <div class="auth-footer">
+        Don't have an account? <a href="register.html">Sign up free →</a>
+        <br><span style="font-size: 0.8em; color: var(--text-secondary); display: block; margin-top: 10px;">made by Ankit Daila in 2026, contact ankitdaila961@gmail.com</span>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="js/auth.js"></script>
+</body>
+</html>

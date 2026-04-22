@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create Account – InterviewAI</title>
+  <meta name="description" content="Sign up for InterviewAI and start practicing mock interviews with AI-powered feedback." />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <div class="bg-blobs">
+    <span></span><span></span><span></span>
+  </div>
+
+  <div class="auth-page">
+    <div class="auth-container">
+
+      <div class="auth-header">
+        <div class="logo-icon-lg">🤖</div>
+        <h1>Create your account</h1>
+        <p>Start your AI interview journey today — it's free.</p>
+      </div>
+
+      <div class="auth-card">
+        <div class="alert alert-error" id="alertError">
+          ⚠️ <span id="alertErrorMsg">Something went wrong.</span>
+        </div>
+        <div class="alert alert-success" id="alertSuccess">
+          ✅ <span id="alertSuccessMsg">Account created! Redirecting…</span>
+        </div>
+
+        <form id="registerForm" novalidate>
+          <div class="form-group">
+            <label class="form-label" for="name">Full Name</label>
+            <input class="form-input" type="text" id="name" name="name"
+              placeholder="John Doe" autocomplete="name" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="email">Email Address</label>
+            <input class="form-input" type="email" id="email" name="email"
+              placeholder="john@example.com" autocomplete="email" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="password">Password</label>
+            <input class="form-input" type="password" id="password" name="password"
+              placeholder="At least 6 characters" autocomplete="new-password" required />
+            <div id="strengthBar" style="display:none;margin-top:8px;">
+              <div style="height:4px;background:var(--border);border-radius:99px;overflow:hidden;">
+                <div id="strengthFill" style="height:100%;width:0;border-radius:99px;transition:all 0.3s;"></div>
+              </div>
+              <div id="strengthText" style="font-size:0.75rem;margin-top:4px;font-weight:500;"></div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="confirmPassword">Confirm Password</label>
+            <input class="form-input" type="password" id="confirmPassword" name="confirmPassword"
+              placeholder="Re-enter your password" autocomplete="new-password" required />
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block btn-lg" id="submitBtn">
+            Create Account
+          </button>
+        </form>
+
+        <div class="divider">or</div>
+
+        <a href="login.html" class="btn btn-outline btn-block" style="margin-top:0;">
+          Sign in to existing account
+        </a>
+      </div>
+
+      <div class="auth-footer">
+        Already have an account? <a href="login.html">Sign in →</a>
+        <br><span style="font-size: 0.8em; color: var(--text-secondary); display: block; margin-top: 10px;">made by Ankit Daila in 2026, contact ankitdaila961@gmail.com</span>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="js/auth.js"></script>
+</body>
+</html>

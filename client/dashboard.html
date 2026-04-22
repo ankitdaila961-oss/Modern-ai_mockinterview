@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard – InterviewAI</title>
+  <meta name="description" content="Your AI Mock Interview Dashboard – track progress, start sessions, and review history." />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <div class="bg-blobs" style="opacity:0.5;">
+    <span></span><span></span><span></span>
+  </div>
+
+  <div class="dashboard-layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <div class="logo-icon">🤖</div>
+        <span>InterviewAI</span>
+      </div>
+
+      <nav class="sidebar-nav">
+        <button class="nav-item active" data-page="overview">
+          <span class="nav-icon">📊</span> Overview
+        </button>
+        <button class="nav-item" data-page="practice">
+          <span class="nav-icon">🎤</span> Practice
+        </button>
+        <button class="nav-item" data-page="chat">
+          <span class="nav-icon">🤖</span> AI Coach
+        </button>
+        <button class="nav-item" data-page="resume">
+          <span class="nav-icon">📄</span> Resume
+        </button>
+        <button class="nav-item" data-page="history">
+          <span class="nav-icon">📋</span> History
+        </button>
+        <button class="nav-item" data-page="profile">
+          <span class="nav-icon">👤</span> Profile
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-info">
+          <div class="user-avatar" id="sidebarAvatar">?</div>
+          <div>
+            <div class="user-name" id="sidebarName">Loading…</div>
+            <div class="user-email" id="sidebarEmail"></div>
+          </div>
+        </div>
+        <button class="nav-item" id="logoutBtn" style="margin-top:8px; color:var(--danger);">
+          <span class="nav-icon">🚪</span> Logout
+        </button>
+        <div style="margin-top: 12px; font-size: 0.75rem; color: var(--text-muted); text-align: center;">
+          made by Ankit Daila in 2026, contact ankitdaila961@gmail.com
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+      <!-- Overview Page -->
+      <div id="page-overview">
+        <div class="page-header">
+          <h1>Good morning, <span id="greetingName" class="text-gradient">there</span> 👋</h1>
+          <p>Here's a summary of your interview preparation progress.</p>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-card-icon" style="background:rgba(108,99,255,0.15);">🎤</div>
+            <div>
+              <div class="stat-card-value">0</div>
+              <div class="stat-card-label">Sessions Completed</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-icon" style="background:rgba(34,211,165,0.15);">⭐</div>
+            <div>
+              <div class="stat-card-value">—</div>
+              <div class="stat-card-label">Average Score</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-icon" style="background:rgba(167,139,250,0.15);">⏱️</div>
+            <div>
+              <div class="stat-card-value">0h</div>
+              <div class="stat-card-label">Time Practiced</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-icon" style="background:rgba(255,107,107,0.15);">🔥</div>
+            <div>
+              <div class="stat-card-value">0</div>
+              <div class="stat-card-label">Day Streak</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-icon" style="background:rgba(34,211,165,0.15);">📄</div>
+            <div>
+              <div class="stat-card-value" id="resumeStatValue">None</div>
+              <div class="stat-card-label">Resume Uploaded</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+          <h2>Quick Actions</h2>
+          <div class="actions-grid">
+            <div class="action-card" onclick="showPage('practice')">
+              <div class="action-card-icon">🚀</div>
+              <div class="action-card-title">Start New Session</div>
+              <div class="action-card-desc">Begin a fresh AI mock interview tailored to your role.</div>
+            </div>
+            <div class="action-card" onclick="showPage('history')">
+              <div class="action-card-icon">📋</div>
+              <div class="action-card-title">View History</div>
+              <div class="action-card-desc">Review your past sessions and track improvement.</div>
+            </div>
+            <div class="action-card" onclick="showPage('profile')">
+              <div class="action-card-icon">⚙️</div>
+              <div class="action-card-title">Update Profile</div>
+              <div class="action-card-desc">Set your target role and experience level.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="recent-section">
+          <h2>Recent Activity</h2>
+          <div class="empty-state">
+            <div class="empty-state-icon">🎯</div>
+            <h3>No sessions yet</h3>
+            <p>Start your first AI mock interview to see your results here.</p>
+            <br/>
+            <button class="btn btn-primary" onclick="showPage('practice')">Start First Session</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Practice Page -->
+      <div id="page-practice" class="hidden">
+        <div class="page-header">
+          <h1>🎤 Mock Interview</h1>
+          <p>Sharpen your skills with AI-generated questions tailored to your resume.</p>
+        </div>
+
+        <div id="interviewSetupScreen" class="glass-panel" style="text-align: center; padding: 60px 20px;">
+          <div style="font-size: 4rem; margin-bottom: 20px;">🤖</div>
+          <h3>Ready for your interview?</h3>
+          <p style="color: var(--text-muted); margin-bottom: 30px;">
+            This mock interview uses your camera and microphone.<br>
+            Please grant permissions to proceed.
+          </p>
+          <button id="enableMediaBtn" class="btn btn-outline" style="font-size: 1.1rem; padding: 16px 32px; margin-bottom: 10px;">Enable Camera &amp; Mic</button>
+          <br>
+          <button id="startInterviewBtn" class="btn btn-primary hidden" style="font-size: 1.1rem; padding: 16px 32px;">Start Session</button>
+        </div>
+
+        <div id="interviewLoadingScreen" class="glass-panel hidden" style="text-align: center; padding: 80px 20px;">
+          <div class="spinner" style="margin: 0 auto 20px;"></div>
+          <h3>Generating your questions...</h3>
+          <p style="color: var(--text-muted);">Analyzing your resume...</p>
+        </div>
+
+        <div id="interviewActiveScreen" class="glass-panel hidden" style="padding: 40px; display: flex; gap: 40px;">
+          
+          <!-- Left side: Video -->
+          <div style="flex: 1; display: flex; flex-direction: column; gap: 20px;">
+            <video id="webcamPreview" autoplay muted playsinline style="width: 100%; border-radius: var(--radius); background: #0f172a; border: 1px solid var(--border); aspect-ratio: 16/9; object-fit: cover;"></video>
+            
+            <div style="display: flex; gap: 10px; align-items: center; justify-content: center;">
+              <button id="recordBtn" class="btn btn-outline" style="border-radius: 50px; padding: 12px 24px; display: flex; align-items: center; gap: 8px;">
+                <span class="nav-icon" id="recordIcon">🎤</span> <span id="recordText">Start Speaking</span>
+              </button>
+            </div>
+          </div>
+          
+          <!-- Right side: QA -->
+          <div style="flex: 1; display: flex; flex-direction: column;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 20px; font-weight: 500;">
+              <span style="color: var(--accent-2);">Question <span id="currentQNum">1</span> of <span id="totalQNum">5</span></span>
+              <span style="color: var(--text-muted);">Mock Session</span>
+            </div>
+            
+            <h2 id="interviewQuestionText" style="margin-bottom: 30px; line-height: 1.5; font-size: 1.2rem;"></h2>
+            
+            <textarea id="interviewAnswerInput" placeholder="Your speech will appear here, or you can type..." style="flex: 1; width: 100%; padding: 20px; border-radius: var(--radius); background: rgba(0,0,0,0.2); border: 1px solid var(--border); color: white; outline: none; font-family: inherit; font-size: 1rem; resize: none; margin-bottom: 20px; min-height: 150px;"></textarea>
+            
+            <div style="display: flex; justify-content: flex-end;">
+              <button id="submitAnswerBtn" class="btn btn-primary">Submit &amp; Next</button>
+            </div>
+          </div>
+
+        </div>
+        
+        <div id="interviewDoneScreen" class="glass-panel hidden" style="text-align: center; padding: 60px 20px;">
+          <div class="spinner" style="margin: 0 auto 20px;"></div>
+          <h3>Session Complete!</h3>
+          <p style="color: var(--text-muted); margin-bottom: 30px;">
+            Great job! Our AI is now analyzing your responses to generate a feedback report...
+          </p>
+        </div>
+
+        <div id="interviewFeedbackScreen" class="glass-panel hidden" style="padding: 40px;">
+          <div style="text-align: center; margin-bottom: 30px;">
+            <div style="font-size: 4rem; margin-bottom: 10px;">📊</div>
+            <h2>AI Feedback Report</h2>
+            <p style="color: var(--text-muted);">Here is how you performed.</p>
+          </div>
+          
+          <div style="display: flex; gap: 20px; justify-content: center; margin-bottom: 40px;">
+            <div class="stat-card" style="flex: 1; text-align: center; justify-content: center; align-items: center; flex-direction: column; padding: 20px;">
+              <div style="font-size: 2rem; font-weight: bold; color: var(--accent);"><span id="fbOverall">0</span>/10</div>
+              <div style="font-size: 0.9rem; color: var(--text-muted);">Overall Score</div>
+            </div>
+            <div class="stat-card" style="flex: 1; text-align: center; justify-content: center; align-items: center; flex-direction: column; padding: 20px;">
+              <div style="font-size: 2rem; font-weight: bold; color: var(--success);"><span id="fbComm">0</span>/10</div>
+              <div style="font-size: 0.9rem; color: var(--text-muted);">Communication</div>
+            </div>
+            <div class="stat-card" style="flex: 1; text-align: center; justify-content: center; align-items: center; flex-direction: column; padding: 20px;">
+              <div style="font-size: 2rem; font-weight: bold; color: var(--warning);"><span id="fbTech">0</span>/10</div>
+              <div style="font-size: 0.9rem; color: var(--text-muted);">Technical</div>
+            </div>
+          </div>
+
+          <div style="background: rgba(255,255,255,0.05); border-radius: var(--radius); padding: 20px; margin-bottom: 20px;">
+            <h3 style="margin-bottom: 10px;">Summary</h3>
+            <p id="fbSummary" style="color: var(--text-secondary); line-height: 1.6;"></p>
+          </div>
+
+          <div style="background: rgba(34,211,165,0.05); border: 1px solid rgba(34,211,165,0.2); border-radius: var(--radius); padding: 20px; margin-bottom: 30px;">
+            <h3 style="margin-bottom: 10px; color: var(--success);">Suggestions for Improvement</h3>
+            <p id="fbSuggestions" style="color: var(--text-secondary); line-height: 1.6;"></p>
+          </div>
+
+          <div style="text-align: center;">
+            <button id="finishInterviewBtn" class="btn btn-primary" style="font-size: 1.1rem; padding: 16px 32px;">Back to Dashboard</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Resume Page -->
+      <div id="page-resume" class="hidden">
+        <div class="page-header">
+          <h1>📄 My Resume</h1>
+          <p>Upload your PDF resume — it will be used to personalise your mock interviews.</p>
+        </div>
+
+        <div style="max-width: 640px;">
+
+          <!-- Current Resume Card (shown when resume exists) -->
+          <div id="resumeCard" class="resume-card hidden">
+            <div class="resume-card-icon">📋</div>
+            <div class="resume-card-info">
+              <div class="resume-card-name" id="resumeFileName">resume.pdf</div>
+              <div class="resume-card-meta" id="resumeFileMeta">Uploaded</div>
+            </div>
+            <div class="resume-card-actions">
+              <a id="resumeViewBtn" href="#" target="_blank" class="btn btn-outline btn-sm">View</a>
+              <button id="resumeDeleteBtn" class="btn btn-danger btn-sm">Delete</button>
+            </div>
+          </div>
+
+          <!-- Upload Zone -->
+          <div class="upload-zone" id="uploadZone">
+            <input type="file" id="resumeFileInput" accept=".pdf" />
+            <span class="upload-zone-icon">☁️</span>
+            <div class="upload-zone-title">Drag &amp; drop your PDF here</div>
+            <div class="upload-zone-sub">or click anywhere in this box to browse</div>
+            <span class="upload-zone-badge">PDF only · Max 5 MB</span>
+          </div>
+
+          <!-- Progress Bar -->
+          <div class="upload-progress" id="uploadProgress">
+            <div class="progress-bar-track">
+              <div class="progress-bar-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-label">
+              <span id="progressFileName"></span>
+              <span id="progressPct">0%</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- History Page -->
+      <div id="page-history" class="hidden">
+        <div class="page-header">
+          <h1>📋 Interview History</h1>
+          <p>Review your past mock interviews and feedback.</p>
+        </div>
+        <div class="glass-panel" style="padding:40px; text-align:center; color:var(--text-muted);">
+          No history available yet.
+        </div>
+      </div>
+
+      <!-- AI Coach / Chat Page -->
+      <div id="page-chat" class="hidden">
+        <div class="page-header">
+          <h1>🤖 AI Career Coach</h1>
+          <p>Ask for job roles, skill improvements, or application advice based on your resume.</p>
+        </div>
+        
+        <div class="chat-container">
+          <div class="chat-box" id="chatBox">
+            <div class="chat-msg ai">
+              <div class="msg-avatar">🤖</div>
+              <div class="msg-bubble">Hello! I'm your AI Career Coach. How can I help you today? Upload a resume in the Resume tab for personalized advice!</div>
+            </div>
+          </div>
+          <div class="chat-input-area">
+            <input type="text" id="chatInput" placeholder="Ask about job roles, skills, or interview tips..." autocomplete="off">
+            <button id="chatSendBtn" class="btn btn-primary">Send</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Profile Page -->
+      <div id="page-profile" class="hidden">
+        <div class="page-header">
+          <h1>👤 My Profile</h1>
+          <p>Manage your account information.</p>
+        </div>
+        <div class="card" style="max-width:520px;">
+          <div style="display:flex;align-items:center;gap:20px;margin-bottom:28px;">
+            <div class="user-avatar" id="profileAvatar" style="width:64px;height:64px;font-size:1.5rem;border-radius:50%;background:var(--gradient);display:flex;align-items:center;justify-content:center;font-weight:700;">?</div>
+            <div>
+              <div style="font-size:1.2rem;font-weight:700;" id="profileName">—</div>
+              <div style="color:var(--text-secondary);font-size:0.875rem;" id="profileEmail">—</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Full Name</label>
+            <input class="form-input" type="text" id="profileNameInput" placeholder="Your name" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input class="form-input" type="email" id="profileEmailInput" placeholder="Your email" readonly style="opacity:0.6;cursor:not-allowed;" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Target Role</label>
+            <input class="form-input" type="text" id="profileRole" placeholder="e.g. Software Engineer" />
+          </div>
+          <button class="btn btn-primary" style="margin-top:8px;">Save Changes</button>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Toast container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Terms and Conditions Modal -->
+  <div id="termsModal" class="modal-overlay hidden">
+    <div class="modal-content glass-panel">
+      <h2>Terms &amp; Conditions</h2>
+      <div class="modal-body">
+        <p style="color: var(--text-secondary); margin-bottom: 12px;">Please read and accept the following terms before starting the mock interview:</p>
+        <ul>
+          <li>Your webcam and microphone will be accessed for the interview simulation.</li>
+          <li>Your audio responses will be processed by third-party speech-to-text APIs.</li>
+          <li>Do not share sensitive, confidential, or personally identifiable information.</li>
+        </ul>
+        <label style="display: flex; gap: 12px; align-items: center; margin-top: 24px; cursor: pointer;">
+          <input type="checkbox" id="termsCheckbox">
+          <span style="color: var(--text-primary); font-weight: 500;">I have read and agree to the terms.</span>
+        </label>
+      </div>
+      <div class="modal-footer" style="margin-top: 32px; display: flex; justify-content: flex-end; gap: 12px;">
+        <button id="cancelTermsBtn" class="btn btn-outline">Cancel</button>
+        <button id="acceptTermsBtn" class="btn btn-primary" disabled>Accept &amp; Continue</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/dashboard.js"></script>
+  <script src="js/resume.js"></script>
+  <script src="js/chat.js"></script>
+  <script src="js/interview.js"></script>
+</body>
+</html>
