@@ -4,6 +4,8 @@ const path     = require('path');
 const fs       = require('fs');
 const pool     = require('../db');
 const { protect } = require('../middleware/authMiddleware');
+const pdfParse = require('pdf-parse');
+const Groq     = require('groq-sdk');
 
 const router = express.Router();
 
@@ -60,6 +62,44 @@ router.post('/upload', protect, (req, res) => {
       // Save new path to DB
       await pool.query('UPDATE users SET resume_path = ? WHERE id = ?', [relativePath, req.user.id]);
 
+      // Parse PDF
+      const absolutePath = path.join(__dirname, '../../', relativePath);
+      const dataBuffer = fs.readFileSync(absolutePath);
+      const pdfData = await pdfParse(dataBuffer);
+      const resumeText = pdfData.text.substring(0, 4000); // limit text to fit context window
+
+      // Extract skills and generate questions using Groq
+      let generatedQuestions = [];
+      let keywords = [];
+
+      const apiKey = process.env.GROQ_API_KEY;
+      if (apiKey) {
+        const groq = new Groq({ apiKey });
+        const prompt = `Based on this resume: \n${resumeText}\n\nExtract key skills/keywords and generate exactly 5 interview questions based on the resume.
+Respond ONLY with a valid JSON object in this format:
+{
+  "keywords": ["skill1", "skill2"],
+  "questions": ["Q1?", "Q2?", "Q3?", "Q4?", "Q5?"]
+}`;
+        try {
+          const completion = await groq.chat.completions.create({
+            model: 'llama-3.3-70b-versatile',
+            messages: [{ role: 'user', content: prompt }],
+            temperature: 0.7,
+            max_tokens: 1000,
+          });
+
+          const raw = completion.choices[0]?.message?.content?.trim();
+          const match = raw.match(/\{[\s\S]*\}/);
+          const parsed = JSON.parse(match ? match[0] : raw);
+          
+          if (parsed.keywords) keywords = parsed.keywords;
+          if (parsed.questions) generatedQuestions = parsed.questions;
+        } catch (aiErr) {
+          console.error('[upload-resume-ai]', aiErr);
+        }
+      }
+
       res.json({
         message: 'Resume uploaded successfully.',
         file: {
@@ -68,10 +108,12 @@ router.post('/upload', protect, (req, res) => {
           path:     relativePath,
           url:      `/${relativePath}`,
         },
+        keywords,
+        questions: generatedQuestions
       });
     } catch (dbErr) {
       console.error('[upload-resume]', dbErr.message);
-      res.status(500).json({ message: 'Database error while saving resume path.' });
+      res.status(500).json({ message: 'Error while saving and analyzing resume.' });
     }
   });
 });

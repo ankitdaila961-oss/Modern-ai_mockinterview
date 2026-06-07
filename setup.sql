@@ -18,6 +18,10 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE TABLE IF NOT EXISTS interviews (
   id          INT AUTO_INCREMENT PRIMARY KEY,
   user_id     INT NOT NULL,
+  question    TEXT DEFAULT NULL,
+  answer      TEXT DEFAULT NULL,
+  score       INT DEFAULT NULL,
+  feedback    TEXT DEFAULT NULL,
   created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );

@@ -423,3 +423,304 @@ footer {
 .modal-content ul { margin: 16px 0; padding-left: 24px; color: var(--text-secondary); line-height: 1.6; }
 .modal-content li { margin-bottom: 8px; }
 .modal-content input[type="checkbox"] { width: 18px; height: 18px; cursor: pointer; }
+
+/* ─── How It Works Section ─── */
+.how-it-works {
+  padding: 100px 24px;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.steps-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 32px;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* Horizontal connecting line on desktop */
+@media (min-width: 1024px) {
+  .steps-container::before {
+    content: '';
+    position: absolute;
+    top: 135px; /* Aligns with the vertical center of the step icons */
+    left: 10%;
+    right: 10%;
+    height: 2px;
+    background: linear-gradient(90deg, 
+      rgba(108, 99, 255, 0.05) 0%, 
+      rgba(167, 139, 250, 0.4) 30%, 
+      rgba(34, 211, 165, 0.4) 70%, 
+      rgba(34, 211, 165, 0.05) 100%
+    );
+    z-index: 0;
+  }
+}
+
+.step-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 40px 30px 30px;
+  text-align: center;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  position: relative;
+  z-index: 1;
+  transition: var(--transition);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* Entrance animation default state */
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.step-card.animate-in {
+  opacity: 1;
+  transform: translateY(0);
+  animation: cardFadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Stagger animation delays */
+.step-card:nth-child(1) { animation-delay: 0.1s; }
+.step-card:nth-child(2) { animation-delay: 0.25s; }
+.step-card:nth-child(3) { animation-delay: 0.4s; }
+.step-card:nth-child(4) { animation-delay: 0.55s; }
+
+@keyframes cardFadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Glassmorphic card glow and border hover */
+.step-card:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(167, 139, 250, 0.4);
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px rgba(108, 99, 255, 0.15), 
+              inset 0 0 20px rgba(255, 255, 255, 0.02);
+}
+
+/* Card step badges */
+.step-badge {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  font-size: 2.5rem;
+  font-weight: 900;
+  line-height: 1;
+  background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.07) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  user-select: none;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: -1px;
+}
+
+.step-card:hover .step-badge {
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Icon Styles */
+.step-icon-wrapper {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.step-icon {
+  width: 70px;
+  height: 70px;
+  border-radius: 20px;
+  background: rgba(108, 99, 255, 0.1);
+  border: 1px solid rgba(108, 99, 255, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-2);
+  transition: var(--transition);
+}
+
+.step-icon .icon-svg {
+  width: 32px;
+  height: 32px;
+  stroke: var(--accent-2);
+  stroke-width: 1.75;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.icon-glow {
+  position: absolute;
+  inset: 5px;
+  border-radius: 24px;
+  background: var(--accent);
+  filter: blur(20px);
+  opacity: 0;
+  transition: var(--transition);
+  z-index: -1;
+}
+
+/* Hover Micro-animations and color changes per card */
+/* Step 1: Upload (bounce/up-down) */
+.step-card[data-step="1"]:hover .step-icon {
+  background: rgba(108, 99, 255, 0.2);
+  border-color: rgba(108, 99, 255, 0.6);
+  color: #fff;
+  transform: scale(1.1);
+}
+.step-card[data-step="1"]:hover .icon-svg {
+  stroke: #fff;
+  animation: iconBounce 1.2s infinite ease-in-out;
+}
+.step-card[data-step="1"]:hover .icon-glow {
+  opacity: 0.3;
+  background: var(--accent);
+}
+
+/* Step 2: AI Generates (spin/pulse) */
+.step-card[data-step="2"] .step-icon {
+  background: rgba(167, 139, 250, 0.1);
+  border-color: rgba(167, 139, 250, 0.25);
+  color: var(--accent-2);
+}
+.step-card[data-step="2"] .icon-svg {
+  stroke: var(--accent-2);
+}
+.step-card[data-step="2"]:hover .step-icon {
+  background: rgba(167, 139, 250, 0.2);
+  border-color: rgba(167, 139, 250, 0.6);
+  color: #fff;
+  transform: scale(1.1);
+}
+.step-card[data-step="2"]:hover .icon-svg {
+  stroke: #fff;
+  animation: iconPulseSpin 2s infinite linear;
+}
+.step-card[data-step="2"]:hover .icon-glow {
+  opacity: 0.3;
+  background: var(--accent-2);
+}
+
+/* Step 3: Practice (chat/shake) */
+.step-card[data-step="3"] .step-icon {
+  background: rgba(34, 211, 165, 0.1);
+  border-color: rgba(34, 211, 165, 0.25);
+  color: var(--success);
+}
+.step-card[data-step="3"] .icon-svg {
+  stroke: var(--success);
+}
+.step-card[data-step="3"]:hover .step-icon {
+  background: rgba(34, 211, 165, 0.2);
+  border-color: rgba(34, 211, 165, 0.6);
+  color: #fff;
+  transform: scale(1.1);
+}
+.step-card[data-step="3"]:hover .icon-svg {
+  stroke: #fff;
+  animation: iconShake 0.6s ease-in-out;
+}
+.step-card[data-step="3"]:hover .icon-glow {
+  opacity: 0.3;
+  background: var(--success);
+}
+
+/* Step 4: Feedback (scale/write) */
+.step-card[data-step="4"] .step-icon {
+  background: rgba(250, 204, 21, 0.1);
+  border-color: rgba(250, 204, 21, 0.25);
+  color: #facc15;
+}
+.step-card[data-step="4"] .icon-svg {
+  stroke: #facc15;
+}
+.step-card[data-step="4"]:hover .step-icon {
+  background: rgba(250, 204, 21, 0.2);
+  border-color: rgba(250, 204, 21, 0.6);
+  color: #fff;
+  transform: scale(1.1);
+}
+.step-card[data-step="4"]:hover .icon-svg {
+  stroke: #fff;
+  animation: iconWiggle 1s ease infinite;
+}
+.step-card[data-step="4"]:hover .icon-glow {
+  opacity: 0.3;
+  background: #facc15;
+}
+
+/* Keyframes for micro-animations */
+@keyframes iconBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes iconPulseSpin {
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.1); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+
+@keyframes iconShake {
+  0%, 100% { transform: rotate(0); }
+  25% { transform: rotate(-8deg) scale(1.05); }
+  75% { transform: rotate(8deg) scale(1.05); }
+}
+
+@keyframes iconWiggle {
+  0%, 100% { transform: rotate(0) scale(1); }
+  25% { transform: rotate(-5deg) translate(-1px, -1px); }
+  75% { transform: rotate(5deg) translate(1px, 1px); }
+}
+
+.step-card h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: var(--text-primary);
+  letter-spacing: -0.3px;
+  transition: var(--transition);
+}
+
+.step-card:hover h3 {
+  color: #fff;
+}
+
+.step-card p {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+/* Make sure mobile responsive connecting lines or vertical stacks look right */
+@media (max-width: 768px) {
+  .steps-container {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .charts-layout-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .dashboard-details-grid {
+    grid-template-columns: 1fr !important;
+  }
+}

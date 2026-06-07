@@ -20,6 +20,10 @@ async function initDB() {
       CREATE TABLE IF NOT EXISTS interviews (
         id          INT AUTO_INCREMENT PRIMARY KEY,
         user_id     INT NOT NULL,
+        question    TEXT DEFAULT NULL,
+        answer      TEXT DEFAULT NULL,
+        score       INT DEFAULT NULL,
+        feedback    TEXT DEFAULT NULL,
         created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -43,6 +47,17 @@ async function initDB() {
         ALTER TABLE users ADD COLUMN IF NOT EXISTS resume_path VARCHAR(500) DEFAULT NULL;
       `);
     } catch (_) { /* column already exists in older MySQL versions – safe to ignore */ }
+
+    // Migration: add columns to interviews table
+    try {
+      await pool.query(`ALTER TABLE interviews ADD COLUMN question TEXT DEFAULT NULL;`);
+      await pool.query(`ALTER TABLE interviews ADD COLUMN answer TEXT DEFAULT NULL;`);
+      await pool.query(`ALTER TABLE interviews ADD COLUMN score INT DEFAULT NULL;`);
+      await pool.query(`ALTER TABLE interviews ADD COLUMN feedback TEXT DEFAULT NULL;`);
+      await pool.query(`ALTER TABLE interviews ADD COLUMN communication_score INT DEFAULT NULL;`);
+      await pool.query(`ALTER TABLE interviews ADD COLUMN technical_score INT DEFAULT NULL;`);
+      await pool.query(`ALTER TABLE interviews ADD COLUMN confidence_score INT DEFAULT NULL;`);
+    } catch (_) { /* columns may already exist */ }
 
     console.log('✅ Database tables are ready.');
   } catch (err) {
